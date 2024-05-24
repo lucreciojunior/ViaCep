@@ -47,7 +47,7 @@ jobs:
       id-token: write
     environment:
       name: github-pages
-      url: https://github.com/lucreciojunior/ViaCep/report.html
+      url: https://lucreciojunior.github.io/ViaCep/report.html
     steps:
       - name: Setup Pages
         uses: actions/configure-pages@v5
