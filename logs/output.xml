@@ -1,0 +1,788 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.0 (Python 3.11.0 on win32)" generated="20240524 17:50:45.644" rpa="false" schemaversion="3">
+<suite id="s1" name="getCep" source="C:\QA\ViaCep\Features\getCep.robot">
+<kw name="Conectar a API" library="services" type="SETUP">
+<kw name="Create Session" library="RequestsLibrary">
+<arg>apiViacep</arg>
+<arg>${base_url}</arg>
+<doc>Create Session: create a HTTP session to a server</doc>
+<msg timestamp="20240524 17:50:46.983" level="INFO">Creating Session using : alias=apiViacep, url=https://viacep.com.br/ws/, headers={},                     cookies={}, auth=None, timeout=None, proxies=None, verify=False,                     debug=0 </msg>
+<status status="PASS" starttime="20240524 17:50:46.982" endtime="20240524 17:50:46.983"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:46.982" endtime="20240524 17:50:46.983"/>
+</kw>
+<test id="s1-t1" name="Realizando um GET no VIACEP com sucesso" line="10">
+<kw name="Quando consultar o CEP" library="get_cep">
+<arg>54759475</arg>
+<kw name="Get in" library="services">
+<var>${RESPOSTA}</var>
+<arg>${CEP}</arg>
+<kw name="GET" library="RequestsLibrary">
+<var>${response}</var>
+<arg>${base_url}${CEP}/json/</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request.</doc>
+<msg timestamp="20240524 17:50:47.285" level="INFO">GET Request : url=https://viacep.com.br/ws/54759475/json/ 
+ path_url=/ws/54759475/json/ 
+ headers={'User-Agent': 'python-requests/2.32.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20240524 17:50:47.285" level="INFO">GET Response : url=https://viacep.com.br/ws/54759475/json/ 
+ status=200, reason=OK 
+ headers={'Server': 'nginx/1.22.0', 'Date': 'Fri, 24 May 2024 20:50:47 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'Expires': 'Fri, 24 May 2024 21:50:47 GMT', 'Cache-Control': 'max-age=3600, public', 'Pragma': 'public', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET', 'Access-Control-Allow-Headers': 'Content-Type, X-Request-With, X-Requested-By', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Max-Age': '86400'} 
+ body={
+  "cep": "54759-475",
+  "logradouro": "Rua Manoel Honorato da Costa",
+  "complemento": "",
+  "bairro": "Vila da Fábrica",
+  "localidade": "Camaragibe",
+  "uf": "PE",
+  "ibge": "2603454",
+  "gia": "",
+  "ddd": "81",
+  "siafi": "2629"
+} 
+ </msg>
+<msg timestamp="20240524 17:50:47.285" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:46.987" endtime="20240524 17:50:47.285"/>
+</kw>
+<msg timestamp="20240524 17:50:47.286" level="INFO">${RESPOSTA} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:46.987" endtime="20240524 17:50:47.286"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${RESPOSTA}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20240524 17:50:47.287" level="INFO">${RESPOSTA} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.286" endtime="20240524 17:50:47.287"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${RESPOSTA}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:47.288" level="INFO">&lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.287" endtime="20240524 17:50:47.288"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:46.987" endtime="20240524 17:50:47.288"/>
+</kw>
+<kw name="Então ira visuazilar o Status Code" library="get_cep">
+<arg>200</arg>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${RESPOSTA.status_code}</arg>
+<arg>${statusCode}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20240524 17:50:47.291" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.289" endtime="20240524 17:50:47.291"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${statusCode}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:47.292" level="INFO">200</msg>
+<status status="PASS" starttime="20240524 17:50:47.292" endtime="20240524 17:50:47.292"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:47.289" endtime="20240524 17:50:47.292"/>
+</kw>
+<kw name="E verificar os campos de retorno do cep solicitado" library="get_cep">
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${campo}</arg>
+<arg>${RESPOSTA.json()}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20240524 17:50:47.295" level="INFO">${campo} = {'cep': '54759-475', 'logradouro': 'Rua Manoel Honorato da Costa', 'complemento': '', 'bairro': 'Vila da Fábrica', 'localidade': 'Camaragibe', 'uf': 'PE', 'ibge': '2603454', 'gia': '', 'ddd': '81', 's...</msg>
+<status status="PASS" starttime="20240524 17:50:47.293" endtime="20240524 17:50:47.295"/>
+</kw>
+<kw name="Dictionary Should Contain Key" library="Collections">
+<arg>${campo}</arg>
+<arg>cep</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.296" endtime="20240524 17:50:47.296"/>
+</kw>
+<kw name="Dictionary Should Contain Value" library="Collections">
+<arg>${campo}</arg>
+<arg>54759-475</arg>
+<doc>Fails if ``value`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.296" endtime="20240524 17:50:47.296"/>
+</kw>
+<kw name="Dictionary Should Contain Key" library="Collections">
+<arg>${campo}</arg>
+<arg>logradouro</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.297" endtime="20240524 17:50:47.297"/>
+</kw>
+<kw name="Dictionary Should Contain Value" library="Collections">
+<arg>${campo}</arg>
+<arg>Rua Manoel Honorato da Costa</arg>
+<doc>Fails if ``value`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.297" endtime="20240524 17:50:47.297"/>
+</kw>
+<kw name="Dictionary Should Contain Key" library="Collections">
+<arg>${campo}</arg>
+<arg>complemento</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.297" endtime="20240524 17:50:47.298"/>
+</kw>
+<kw name="Dictionary Should Contain Value" library="Collections">
+<arg>${campo}</arg>
+<arg>${EMPTY}</arg>
+<doc>Fails if ``value`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.298" endtime="20240524 17:50:47.298"/>
+</kw>
+<kw name="Dictionary Should Contain Key" library="Collections">
+<arg>${campo}</arg>
+<arg>bairro</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.298" endtime="20240524 17:50:47.299"/>
+</kw>
+<kw name="Dictionary Should Contain Value" library="Collections">
+<arg>${campo}</arg>
+<arg>Vila da Fábrica</arg>
+<doc>Fails if ``value`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.299" endtime="20240524 17:50:47.299"/>
+</kw>
+<kw name="Dictionary Should Contain Key" library="Collections">
+<arg>${campo}</arg>
+<arg>localidade</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.299" endtime="20240524 17:50:47.299"/>
+</kw>
+<kw name="Dictionary Should Contain Value" library="Collections">
+<arg>${campo}</arg>
+<arg>Camaragibe</arg>
+<doc>Fails if ``value`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.300" endtime="20240524 17:50:47.300"/>
+</kw>
+<kw name="Dictionary Should Contain Key" library="Collections">
+<arg>${campo}</arg>
+<arg>uf</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.300" endtime="20240524 17:50:47.300"/>
+</kw>
+<kw name="Dictionary Should Contain Value" library="Collections">
+<arg>${campo}</arg>
+<arg>PE</arg>
+<doc>Fails if ``value`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.300" endtime="20240524 17:50:47.301"/>
+</kw>
+<kw name="Dictionary Should Contain Key" library="Collections">
+<arg>${campo}</arg>
+<arg>ibge</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.301" endtime="20240524 17:50:47.301"/>
+</kw>
+<kw name="Dictionary Should Contain Value" library="Collections">
+<arg>${campo}</arg>
+<arg>2603454</arg>
+<doc>Fails if ``value`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.301" endtime="20240524 17:50:47.301"/>
+</kw>
+<kw name="Dictionary Should Contain Key" library="Collections">
+<arg>${campo}</arg>
+<arg>gia</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.301" endtime="20240524 17:50:47.302"/>
+</kw>
+<kw name="Dictionary Should Contain Value" library="Collections">
+<arg>${campo}</arg>
+<arg>${EMPTY}</arg>
+<doc>Fails if ``value`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.302" endtime="20240524 17:50:47.302"/>
+</kw>
+<kw name="Dictionary Should Contain Key" library="Collections">
+<arg>${campo}</arg>
+<arg>ddd</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.302" endtime="20240524 17:50:47.302"/>
+</kw>
+<kw name="Dictionary Should Contain Value" library="Collections">
+<arg>${campo}</arg>
+<arg>81</arg>
+<doc>Fails if ``value`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.303" endtime="20240524 17:50:47.303"/>
+</kw>
+<kw name="Dictionary Should Contain Key" library="Collections">
+<arg>${campo}</arg>
+<arg>siafi</arg>
+<doc>Fails if ``key`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.303" endtime="20240524 17:50:47.303"/>
+</kw>
+<kw name="Dictionary Should Contain Value" library="Collections">
+<arg>${campo}</arg>
+<arg>2629</arg>
+<doc>Fails if ``value`` is not found from ``dictionary``.</doc>
+<status status="PASS" starttime="20240524 17:50:47.303" endtime="20240524 17:50:47.303"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${campo}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:47.303" level="INFO">{'cep': '54759-475', 'logradouro': 'Rua Manoel Honorato da Costa', 'complemento': '', 'bairro': 'Vila da Fábrica', 'localidade': 'Camaragibe', 'uf': 'PE', 'ibge': '2603454', 'gia': '', 'ddd': '81', 'siafi': '2629'}</msg>
+<status status="PASS" starttime="20240524 17:50:47.303" endtime="20240524 17:50:47.303"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:47.293" endtime="20240524 17:50:47.303"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:46.983" endtime="20240524 17:50:47.305"/>
+</test>
+<test id="s1-t2" name="Realizando um GET no VIACEP com CEP inexistente" line="15">
+<kw name="Quando consultar o CEP" library="get_cep">
+<arg>99999999</arg>
+<kw name="Get in" library="services">
+<var>${RESPOSTA}</var>
+<arg>${CEP}</arg>
+<kw name="GET" library="RequestsLibrary">
+<var>${response}</var>
+<arg>${base_url}${CEP}/json/</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request.</doc>
+<msg timestamp="20240524 17:50:47.582" level="INFO">GET Request : url=https://viacep.com.br/ws/99999999/json/ 
+ path_url=/ws/99999999/json/ 
+ headers={'User-Agent': 'python-requests/2.32.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20240524 17:50:47.582" level="INFO">GET Response : url=https://viacep.com.br/ws/99999999/json/ 
+ status=200, reason=OK 
+ headers={'Server': 'nginx/1.22.0', 'Date': 'Fri, 24 May 2024 20:50:47 GMT', 'Content-Type': 'application/json; charset=utf-8', 'Transfer-Encoding': 'chunked', 'Connection': 'keep-alive', 'Expires': 'Fri, 24 May 2024 21:50:47 GMT', 'Cache-Control': 'max-age=3600, public', 'Pragma': 'public', 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods': 'GET', 'Access-Control-Allow-Headers': 'Content-Type, X-Request-With, X-Requested-By', 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Max-Age': '86400'} 
+ body={
+  "erro": true
+} 
+ </msg>
+<msg timestamp="20240524 17:50:47.583" level="INFO">${response} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.322" endtime="20240524 17:50:47.583"/>
+</kw>
+<msg timestamp="20240524 17:50:47.583" level="INFO">${RESPOSTA} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.322" endtime="20240524 17:50:47.583"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${RESPOSTA}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20240524 17:50:47.583" level="INFO">${RESPOSTA} = &lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.583" endtime="20240524 17:50:47.583"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${RESPOSTA}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:47.583" level="INFO">&lt;Response [200]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.583" endtime="20240524 17:50:47.583"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:47.320" endtime="20240524 17:50:47.584"/>
+</kw>
+<kw name="Então ira visuazilar o Status Code" library="get_cep">
+<arg>200</arg>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${RESPOSTA.status_code}</arg>
+<arg>${statusCode}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20240524 17:50:47.585" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.584" endtime="20240524 17:50:47.585"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${statusCode}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:47.585" level="INFO">200</msg>
+<status status="PASS" starttime="20240524 17:50:47.585" endtime="20240524 17:50:47.585"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:47.584" endtime="20240524 17:50:47.586"/>
+</kw>
+<kw name="E validara a mensagem de erro para o CEP inexistente" library="get_cep">
+<arg>True</arg>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${campoErro}</arg>
+<arg>${RESPOSTA.json()}[erro]</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20240524 17:50:47.587" level="INFO">${campoErro} = True</msg>
+<status status="PASS" starttime="20240524 17:50:47.586" endtime="20240524 17:50:47.587"/>
+</kw>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${campoErro}</arg>
+<arg>${mensagem}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20240524 17:50:47.587" level="INFO">Argument types are:
+&lt;class 'bool'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.587" endtime="20240524 17:50:47.587"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${mensagem}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:47.587" level="INFO">True</msg>
+<status status="PASS" starttime="20240524 17:50:47.587" endtime="20240524 17:50:47.587"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:47.586" endtime="20240524 17:50:47.587"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:47.318" endtime="20240524 17:50:47.588"/>
+</test>
+<test id="s1-t3" name="Realizando um GET no VIACEP com 9 digitos" line="20">
+<kw name="Quando consultar o CEP" library="get_cep">
+<arg>999999999</arg>
+<kw name="Get in" library="services">
+<var>${RESPOSTA}</var>
+<arg>${CEP}</arg>
+<kw name="GET" library="RequestsLibrary">
+<var>${response}</var>
+<arg>${base_url}${CEP}/json/</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request.</doc>
+<msg timestamp="20240524 17:50:47.861" level="INFO">GET Request : url=https://viacep.com.br/ws/999999999/json/ 
+ path_url=/ws/999999999/json/ 
+ headers={'User-Agent': 'python-requests/2.32.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20240524 17:50:47.861" level="INFO">GET Response : url=https://viacep.com.br/ws/999999999/json/ 
+ status=400, reason=Bad Request 
+ headers={'Server': 'nginx/1.22.0', 'Date': 'Fri, 24 May 2024 20:50:48 GMT', 'Content-Type': 'text/html; charset=utf-8', 'Content-Length': '494', 'Connection': 'close', 'ETag': '"6242f812-1ee"', 'Strict-Transport-Security': 'max-age=63072000'} 
+ body=&lt;!DOCTYPE HTML&gt;
+&lt;html lang="pt-br"&gt;
+
+&lt;head&gt;
+  &lt;title&gt;ViaCEP 400&lt;/title&gt;
+  &lt;meta charset="utf-8" /&gt;
+  &lt;style type="text/css"&gt;
+      h1 {
+          color: #555;
+          text-align: center;
+          font-size: 4em;
+      }
+      h2, h3 {
+          color: #666;
+          text-align: center;
+          font-size: 3em;
+      }
+      h3 {
+          font-size: 1.5em;
+      }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;Http 400&lt;/h1&gt;
+    &lt;h3&gt;Verifique a URL&lt;/h3&gt;
+    &lt;h3&gt;{Bad Request}&lt;/h3&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+ 
+ </msg>
+<msg timestamp="20240524 17:50:47.861" level="INFO">${response} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.595" endtime="20240524 17:50:47.861"/>
+</kw>
+<msg timestamp="20240524 17:50:47.861" level="INFO">${RESPOSTA} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.595" endtime="20240524 17:50:47.861"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${RESPOSTA}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20240524 17:50:47.862" level="INFO">${RESPOSTA} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.862" endtime="20240524 17:50:47.862"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${RESPOSTA}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:47.863" level="INFO">&lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.862" endtime="20240524 17:50:47.863"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:47.595" endtime="20240524 17:50:47.863"/>
+</kw>
+<kw name="Então ira visuazilar o Status Code" library="get_cep">
+<arg>400</arg>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${RESPOSTA.status_code}</arg>
+<arg>${statusCode}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20240524 17:50:47.866" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.865" endtime="20240524 17:50:47.866"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${statusCode}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:47.867" level="INFO">400</msg>
+<status status="PASS" starttime="20240524 17:50:47.866" endtime="20240524 17:50:47.867"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:47.863" endtime="20240524 17:50:47.867"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:47.593" endtime="20240524 17:50:47.867"/>
+</test>
+<test id="s1-t4" name="Realizando um GET no VIACEP com 7 digitos" line="24">
+<kw name="Quando consultar o CEP" library="get_cep">
+<arg>1234567</arg>
+<kw name="Get in" library="services">
+<var>${RESPOSTA}</var>
+<arg>${CEP}</arg>
+<kw name="GET" library="RequestsLibrary">
+<var>${response}</var>
+<arg>${base_url}${CEP}/json/</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request.</doc>
+<msg timestamp="20240524 17:50:48.138" level="INFO">GET Request : url=https://viacep.com.br/ws/1234567/json/ 
+ path_url=/ws/1234567/json/ 
+ headers={'User-Agent': 'python-requests/2.32.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20240524 17:50:48.138" level="INFO">GET Response : url=https://viacep.com.br/ws/1234567/json/ 
+ status=400, reason=Bad Request 
+ headers={'Server': 'nginx/1.22.0', 'Date': 'Fri, 24 May 2024 20:50:48 GMT', 'Content-Type': 'text/html; charset=utf-8', 'Content-Length': '494', 'Connection': 'close', 'ETag': '"6242f812-1ee"', 'Strict-Transport-Security': 'max-age=63072000'} 
+ body=&lt;!DOCTYPE HTML&gt;
+&lt;html lang="pt-br"&gt;
+
+&lt;head&gt;
+  &lt;title&gt;ViaCEP 400&lt;/title&gt;
+  &lt;meta charset="utf-8" /&gt;
+  &lt;style type="text/css"&gt;
+      h1 {
+          color: #555;
+          text-align: center;
+          font-size: 4em;
+      }
+      h2, h3 {
+          color: #666;
+          text-align: center;
+          font-size: 3em;
+      }
+      h3 {
+          font-size: 1.5em;
+      }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;Http 400&lt;/h1&gt;
+    &lt;h3&gt;Verifique a URL&lt;/h3&gt;
+    &lt;h3&gt;{Bad Request}&lt;/h3&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+ 
+ </msg>
+<msg timestamp="20240524 17:50:48.138" level="INFO">${response} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.881" endtime="20240524 17:50:48.138"/>
+</kw>
+<msg timestamp="20240524 17:50:48.138" level="INFO">${RESPOSTA} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:47.880" endtime="20240524 17:50:48.138"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${RESPOSTA}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20240524 17:50:48.139" level="INFO">${RESPOSTA} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.139" endtime="20240524 17:50:48.139"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${RESPOSTA}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:48.139" level="INFO">&lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.139" endtime="20240524 17:50:48.139"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:47.880" endtime="20240524 17:50:48.139"/>
+</kw>
+<kw name="Então ira visuazilar o Status Code" library="get_cep">
+<arg>400</arg>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${RESPOSTA.status_code}</arg>
+<arg>${statusCode}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20240524 17:50:48.142" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.141" endtime="20240524 17:50:48.142"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${statusCode}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:48.142" level="INFO">400</msg>
+<status status="PASS" starttime="20240524 17:50:48.142" endtime="20240524 17:50:48.142"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:48.141" endtime="20240524 17:50:48.142"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:47.874" endtime="20240524 17:50:48.142"/>
+</test>
+<test id="s1-t5" name="Realizando um GET no VIACEP com alfanumericos" line="28">
+<kw name="Quando consultar o CEP" library="get_cep">
+<arg>ABCDE475</arg>
+<kw name="Get in" library="services">
+<var>${RESPOSTA}</var>
+<arg>${CEP}</arg>
+<kw name="GET" library="RequestsLibrary">
+<var>${response}</var>
+<arg>${base_url}${CEP}/json/</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request.</doc>
+<msg timestamp="20240524 17:50:48.416" level="INFO">GET Request : url=https://viacep.com.br/ws/ABCDE475/json/ 
+ path_url=/ws/ABCDE475/json/ 
+ headers={'User-Agent': 'python-requests/2.32.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20240524 17:50:48.416" level="INFO">GET Response : url=https://viacep.com.br/ws/ABCDE475/json/ 
+ status=400, reason=Bad Request 
+ headers={'Server': 'nginx/1.22.0', 'Date': 'Fri, 24 May 2024 20:50:48 GMT', 'Content-Type': 'text/html; charset=utf-8', 'Content-Length': '494', 'Connection': 'close', 'ETag': '"6242f812-1ee"', 'Strict-Transport-Security': 'max-age=63072000'} 
+ body=&lt;!DOCTYPE HTML&gt;
+&lt;html lang="pt-br"&gt;
+
+&lt;head&gt;
+  &lt;title&gt;ViaCEP 400&lt;/title&gt;
+  &lt;meta charset="utf-8" /&gt;
+  &lt;style type="text/css"&gt;
+      h1 {
+          color: #555;
+          text-align: center;
+          font-size: 4em;
+      }
+      h2, h3 {
+          color: #666;
+          text-align: center;
+          font-size: 3em;
+      }
+      h3 {
+          font-size: 1.5em;
+      }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;Http 400&lt;/h1&gt;
+    &lt;h3&gt;Verifique a URL&lt;/h3&gt;
+    &lt;h3&gt;{Bad Request}&lt;/h3&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+ 
+ </msg>
+<msg timestamp="20240524 17:50:48.416" level="INFO">${response} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.155" endtime="20240524 17:50:48.416"/>
+</kw>
+<msg timestamp="20240524 17:50:48.416" level="INFO">${RESPOSTA} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.154" endtime="20240524 17:50:48.416"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${RESPOSTA}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20240524 17:50:48.417" level="INFO">${RESPOSTA} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.417" endtime="20240524 17:50:48.417"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${RESPOSTA}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:48.417" level="INFO">&lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.417" endtime="20240524 17:50:48.417"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:48.154" endtime="20240524 17:50:48.417"/>
+</kw>
+<kw name="Então ira visuazilar o Status Code" library="get_cep">
+<arg>400</arg>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${RESPOSTA.status_code}</arg>
+<arg>${statusCode}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20240524 17:50:48.419" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.419" endtime="20240524 17:50:48.419"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${statusCode}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:48.420" level="INFO">400</msg>
+<status status="PASS" starttime="20240524 17:50:48.420" endtime="20240524 17:50:48.420"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:48.418" endtime="20240524 17:50:48.420"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:48.149" endtime="20240524 17:50:48.420"/>
+</test>
+<test id="s1-t6" name="Realizando um GET no VIACEP com espaço entre os digitos" line="32">
+<kw name="Quando consultar o CEP" library="get_cep">
+<arg>54759 475</arg>
+<kw name="Get in" library="services">
+<var>${RESPOSTA}</var>
+<arg>${CEP}</arg>
+<kw name="GET" library="RequestsLibrary">
+<var>${response}</var>
+<arg>${base_url}${CEP}/json/</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request.</doc>
+<msg timestamp="20240524 17:50:48.694" level="INFO">GET Request : url=https://viacep.com.br/ws/54759%20475/json/ 
+ path_url=/ws/54759%20475/json/ 
+ headers={'User-Agent': 'python-requests/2.32.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20240524 17:50:48.694" level="INFO">GET Response : url=https://viacep.com.br/ws/54759%20475/json/ 
+ status=400, reason=Bad Request 
+ headers={'Server': 'nginx/1.22.0', 'Date': 'Fri, 24 May 2024 20:50:48 GMT', 'Content-Type': 'text/html; charset=utf-8', 'Content-Length': '494', 'Connection': 'close', 'ETag': '"6242f812-1ee"', 'Strict-Transport-Security': 'max-age=63072000'} 
+ body=&lt;!DOCTYPE HTML&gt;
+&lt;html lang="pt-br"&gt;
+
+&lt;head&gt;
+  &lt;title&gt;ViaCEP 400&lt;/title&gt;
+  &lt;meta charset="utf-8" /&gt;
+  &lt;style type="text/css"&gt;
+      h1 {
+          color: #555;
+          text-align: center;
+          font-size: 4em;
+      }
+      h2, h3 {
+          color: #666;
+          text-align: center;
+          font-size: 3em;
+      }
+      h3 {
+          font-size: 1.5em;
+      }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;Http 400&lt;/h1&gt;
+    &lt;h3&gt;Verifique a URL&lt;/h3&gt;
+    &lt;h3&gt;{Bad Request}&lt;/h3&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+ 
+ </msg>
+<msg timestamp="20240524 17:50:48.694" level="INFO">${response} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.431" endtime="20240524 17:50:48.694"/>
+</kw>
+<msg timestamp="20240524 17:50:48.695" level="INFO">${RESPOSTA} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.431" endtime="20240524 17:50:48.695"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${RESPOSTA}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20240524 17:50:48.695" level="INFO">${RESPOSTA} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.695" endtime="20240524 17:50:48.695"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${RESPOSTA}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:48.695" level="INFO">&lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.695" endtime="20240524 17:50:48.696"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:48.430" endtime="20240524 17:50:48.696"/>
+</kw>
+<kw name="Então ira visuazilar o Status Code" library="get_cep">
+<arg>400</arg>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${RESPOSTA.status_code}</arg>
+<arg>${statusCode}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20240524 17:50:48.698" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.696" endtime="20240524 17:50:48.698"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${statusCode}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:48.698" level="INFO">400</msg>
+<status status="PASS" starttime="20240524 17:50:48.698" endtime="20240524 17:50:48.698"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:48.696" endtime="20240524 17:50:48.698"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:48.427" endtime="20240524 17:50:48.699"/>
+</test>
+<test id="s1-t7" name="Realizando um GET no VIACEP com carecteres especiais" line="36">
+<kw name="Quando consultar o CEP" library="get_cep">
+<arg>54759+-@</arg>
+<kw name="Get in" library="services">
+<var>${RESPOSTA}</var>
+<arg>${CEP}</arg>
+<kw name="GET" library="RequestsLibrary">
+<var>${response}</var>
+<arg>${base_url}${CEP}/json/</arg>
+<arg>expected_status=any</arg>
+<doc>Sends a GET request.</doc>
+<msg timestamp="20240524 17:50:48.966" level="INFO">GET Request : url=https://viacep.com.br/ws/54759+-@/json/ 
+ path_url=/ws/54759+-@/json/ 
+ headers={'User-Agent': 'python-requests/2.32.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive'} 
+ body=None 
+ </msg>
+<msg timestamp="20240524 17:50:48.966" level="INFO">GET Response : url=https://viacep.com.br/ws/54759+-@/json/ 
+ status=400, reason=Bad Request 
+ headers={'Server': 'nginx/1.22.0', 'Date': 'Fri, 24 May 2024 20:50:49 GMT', 'Content-Type': 'text/html; charset=utf-8', 'Content-Length': '494', 'Connection': 'close', 'ETag': '"6242f812-1ee"', 'Strict-Transport-Security': 'max-age=63072000'} 
+ body=&lt;!DOCTYPE HTML&gt;
+&lt;html lang="pt-br"&gt;
+
+&lt;head&gt;
+  &lt;title&gt;ViaCEP 400&lt;/title&gt;
+  &lt;meta charset="utf-8" /&gt;
+  &lt;style type="text/css"&gt;
+      h1 {
+          color: #555;
+          text-align: center;
+          font-size: 4em;
+      }
+      h2, h3 {
+          color: #666;
+          text-align: center;
+          font-size: 3em;
+      }
+      h3 {
+          font-size: 1.5em;
+      }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+    &lt;h1&gt;Http 400&lt;/h1&gt;
+    &lt;h3&gt;Verifique a URL&lt;/h3&gt;
+    &lt;h3&gt;{Bad Request}&lt;/h3&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;
+ 
+ </msg>
+<msg timestamp="20240524 17:50:48.967" level="INFO">${response} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.707" endtime="20240524 17:50:48.967"/>
+</kw>
+<msg timestamp="20240524 17:50:48.967" level="INFO">${RESPOSTA} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.707" endtime="20240524 17:50:48.967"/>
+</kw>
+<kw name="Set Global Variable" library="BuiltIn">
+<arg>${RESPOSTA}</arg>
+<doc>Makes a variable available globally in all tests and suites.</doc>
+<msg timestamp="20240524 17:50:48.967" level="INFO">${RESPOSTA} = &lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.967" endtime="20240524 17:50:48.967"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${RESPOSTA}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:48.968" level="INFO">&lt;Response [400]&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.967" endtime="20240524 17:50:48.968"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:48.706" endtime="20240524 17:50:48.968"/>
+</kw>
+<kw name="Então ira visuazilar o Status Code" library="get_cep">
+<arg>400</arg>
+<kw name="Should Be Equal As Strings" library="BuiltIn">
+<arg>${RESPOSTA.status_code}</arg>
+<arg>${statusCode}</arg>
+<doc>Fails if objects are unequal after converting them to strings.</doc>
+<msg timestamp="20240524 17:50:48.969" level="INFO">Argument types are:
+&lt;class 'int'&gt;
+&lt;class 'str'&gt;</msg>
+<status status="PASS" starttime="20240524 17:50:48.968" endtime="20240524 17:50:48.969"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>${statusCode}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20240524 17:50:48.969" level="INFO">400</msg>
+<status status="PASS" starttime="20240524 17:50:48.969" endtime="20240524 17:50:48.969"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:48.968" endtime="20240524 17:50:48.969"/>
+</kw>
+<status status="PASS" starttime="20240524 17:50:48.703" endtime="20240524 17:50:48.970"/>
+</test>
+<doc>Documentacao da API: VIACEP</doc>
+<status status="PASS" starttime="20240524 17:50:45.646" endtime="20240524 17:50:48.975"/>
+</suite>
+<statistics>
+<total>
+<stat pass="7" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="7" fail="0" skip="0" id="s1" name="getCep">getCep</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
