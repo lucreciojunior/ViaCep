@@ -47,4 +47,4 @@ robot -d results -t "Realizando um GET no VIACEP com sucesso" features/get_cep.r
 ```
 
 ## EVIDÊNCIAS
-Os arquivos com as evidências ficam localizados na pasta *logs* do projeto, esta pasta só é criada depois da primeira execução, nesta pasta se encontram os logs, o report html com os status da execução e os prins evidênciando a execução.
+Os arquivos com as evidências ficam localizados na pasta *results* do projeto, esta pasta só é criada depois da primeira execução, nesta pasta se encontram os logs, o report html com os status da execução e os prins evidênciando a execução.
