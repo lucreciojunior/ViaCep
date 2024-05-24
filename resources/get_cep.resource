@@ -1,4 +1,5 @@
 *** Settings ***
+
 Resource    base.robot
 
 
@@ -47,3 +48,8 @@ E validara a mensagem de erro para o CEP inexistente
     Set Global Variable              ${campoErro}        ${RESPOSTA.json()}[erro]    
     Should Be Equal As Strings       ${campoErro}        ${mensagem}
     Log                              ${mensagem}
+
+E validara o Reason com valor
+    [Arguments]                       ${reason}
+    Should Be Equal As Strings        ${RESPOSTA.reason}        ${reason}
+    Log                               ${reason}
